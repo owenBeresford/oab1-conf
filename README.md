@@ -6,6 +6,8 @@ Assorted *nix tool configs, for me.
 This is a project I need, not a project that I have.
 
 Requirements :
+* bashrc and related
+* SSHrc and bash macros 
 * vim conf
 * vim plugins
 * spell check stuff
