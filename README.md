@@ -3,7 +3,7 @@ oab1-conf
 
 Assorted *nix tool configs, for me.
 
-This is a project I need, not a project that I have.
+This is a project I need, not a project that I have.  "Nevermore" the raven croaks.
 
 Requirements :
 * bashrc and related
@@ -24,5 +24,6 @@ Requirements :
 * psql config
 * mysql config (console, - security)
 * postgres config (console, - security)
+* anything for puppet and vagrant
 * ...list to be extended...
 * copy of my ~/bin
