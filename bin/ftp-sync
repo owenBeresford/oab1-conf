@@ -1,0 +1,214 @@
+#!/usr/bin/php
+<?php
+/**
+Script to upload newer files to a remote FTP server.
+This is a quick hack.  No objects, no time. No intent to apply to other protocols.
+As soon as all the servers I need to talk with support git, this is pointless.
+
+@licence  MIT
+@author owen beresford owen@iceline.ltd.uk
+
+I am applying this to a github, as every year I need to extend the date parsing code.
+The checked in source has no config...
+*/
+
+# 3h work, intially
+
+if(!function_exists('ftp_connect')) {
+	die("ERR: The PHP interp doesn;t have ftp library compiled in.");
+}
+
+
+
+if(!defined( 'define_settings')) {
+function define_settings() {
+var_dump("WARNING: did you define the config? (if yes, strip this marker)");
+	$out	= array(
+		'host'		=> '',
+		'port'		=> 21,
+		'timeout'	=> 20,
+   		'un' 		=> 'owenberesford.me.uk',
+		'pw' 		=> '',
+		'dir'		=> '',
+		'ldir'		=> '',
+		'fake'		=> true,
+				);
+
+	$ret	=getopt('r');
+	if(array_key_exists('r', $ret)) {
+		print("Altering live site is enabled..\n");
+		$out['fake']=false;
+	}
+	date_default_timezone_set('Europe/London');
+
+	return $out;
+}
+}
+
+# resource ftp_connect ( string $host [, int $port = 21 [, int $timeout = 90 ]] )
+$opts		= define_settings();
+
+$ftp		= ftp_connect ( $opts['host'], $opts['port'], $opts['timeout'] );
+if(! is_resource($ftp)) {
+	die("ERR: No connection ".$opts['host'].'#'.$opts['port']);
+}
+if(! ftp_login( $ftp, $opts['un'], $opts['pw'] )) {
+	die("ERR: No login ".$opts['login']);
+}
+if(! ftp_chdir( $ftp, $opts['dir'] )) {
+	die("ERR: No chdir ".$opts['dir']);	
+}
+
+$lfiles		= list_local_files($opts);
+$rfiles		= ftp_rawlist($ftp, '.', false );
+$upload		= dir_difference($lfiles, $rfiles);
+
+if($opts['fake']) {
+	var_dump("INFO: upload is..", $upload);
+} else {
+	chdir(dirname(__FILE__).'/'.$opts['ldir']);
+	foreach($upload as $v) {
+		print("INFO: Uploading '$v'\n");
+		if(! ftp_put($ftp, $v, './'.$v, FTP_ASCII ) ) {
+			die("ERR: Upload failed for ".$v);
+		}
+	}
+}
+ftp_close($ftp);
+
+
+
+
+function list_local_files($opts) {
+	$dhnd	= opendir(dirname(__FILE__).'/'.$opts['ldir']);
+	if(! is_resource($dhnd)) {
+		die("ERR: No localDir ".$opts['ldir']);
+	}
+
+	$files	= array();
+	$suffix = '.wiki';
+	$slen   = strlen( $suffix);
+	while($f=readdir($dhnd)) {
+		if($f=='.' || $f=='..') {
+			continue;
+		}
+		# this happens to strip directories,,, as well as random files
+		if(strpos($f, $suffix) + $slen!= strlen($f)) {
+			continue;
+		}
+		$files[$f]=dirname(__FILE__).'/'.$opts['ldir'].'/'.$f;
+	}
+	return $files;
+}
+
+# this function is non reusable/ non generic...
+# due to the parsing,.,.,.
+function dir_difference($lfiles, $rfiles) {
+	$upload		= array();
+# first loop must be rside, as we haven;t parsed the rastered data
+	foreach($rfiles as $k=>$f) {
+		$rside	= parse_ls( $f);
+		if($rside['name']=='.' || $rside['name']=='..') {
+			continue;
+		}
+	
+		$rfiles[$rside['name']]=$rside;
+
+		if(!array_key_exists($rside['name'], $lfiles)) {
+			print("WARN: File ".$rside['name']." exists in the serve but not locally.\n");
+			continue;	
+		}
+
+		$lside	= stat($lfiles[ $rside['name'] ]);
+		if(!is_array($lside)) {
+			print("WARN: File ".$rside['name']." fails stat(). weird.\n");
+			continue;
+		}
+		$lside['name']=basename($rside['name']);
+
+		$haxed		= gmdate("Y-m-d H:i:s", $lside['mtime']);
+		$haxed		= strtotime($haxed );
+		if($rside['mtime']<$haxed) {
+			$upload[]=$rside['name'];
+		}
+	}
+
+	foreach($lfiles as $k=>$v) {
+		if(!array_key_exists($k, $rfiles)) {
+			$upload[]=$k;
+		}
+	}
+	return $upload;
+}
+
+/**
+array(3) {
+  [0]=>
+  string(65) "drwxr-x---   3 vincent  vincent      4096 Jul 12 12:16 public_ftp"
+  [1]=>
+  string(66) "drwxr-x---  15 vincent  vincent      4096 Nov  3 21:31 public_html"
+  [2]=>
+  string(73) "lrwxrwxrwx   1 vincent  vincent        11 Jul 12 12:16 www -> public_html"
+}
+
+-rw-r--r--   1 owenberesford.me.uk 1038127      5654 Jan  8  2014 web-application-developer.wiki
+
+   [dev] => 771
+    [ino] => 488704
+    [mode] => 33188
+    [nlink] => 1
+    [uid] => 0
+    [gid] => 0
+    [rdev] => 0
+    [size] => 1114
+    [atime] => 1061067181
+    [mtime] => 1056136526
+    [ctime] => 1056136526
+    [blksize] => 4096
+    [blocks] => 8
+
+*/
+function parse_ls($raw) {
+	$months=array(
+		'jan'=>1,
+		'feb'=>2,
+		'mar'=>3,
+		'apr'=>4,
+		'may'=>5,
+		'jun'=>6,
+		'jul'=>7,
+		'aug'=>8,
+		'sep'=>9,
+		'oct'=>10,
+		'nov'=>11,
+		'dec'=>12,
+				);
+
+	$bits		= array();
+	$count		= preg_match_all('/[ \t]+([^ \t]+)/', $raw, $bits );
+	
+	$out		= array();
+	$out['mode']= substr($raw, 0, 9); # ought to parse this..
+	$out['uid']	= trim($bits[1][1]);
+	$out['gid']	= trim($bits[1][2]);
+	$out['size']= trim($bits[1][3]);
+	
+	if(strlen($bits[1][5])==1) {
+		$bits[1][5]="0".$bits[1][5];
+	}
+
+	if( $months[strtolower($bits[1][4] )] >date('m') ) {
+		$out['mtime']= strtotime((date('Y')-1).'-'.trim($bits[1][4]).'-'.trim($bits[1][5]).' '.trim($bits[1][6]));
+		
+	} else {
+		if(strpos($bits[1][6], ':')) {
+			$out['mtime']= strtotime(date('Y').'-'.trim($bits[1][4]).'-'.trim($bits[1][5]).' '.trim($bits[1][6]));
+		} else {
+			$out['mtime']= strtotime(trim($bits[1][6]).'-'.trim($bits[1][4]).'-'.trim($bits[1][5]).' 09:00');
+		}
+	}
+	$out['name']= trim($bits[1][7]);
+	return $out;
+}
+
+?>
