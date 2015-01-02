@@ -4,6 +4,7 @@ oab1-conf
 Assorted *nix tool configs, for me.
 
 This is a project I need, not a project that I have.  "Nevermore" the raven croaks.
+**I am adding content to this, as I make any changes.**
 
 Requirements :
 * bashrc and related
