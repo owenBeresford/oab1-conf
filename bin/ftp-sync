@@ -13,7 +13,7 @@ The checked in source has no config...
 */
 
 # 3h work, intially
-
+var_dump("Srsly, please dn't copy this. I actually do write code for a living.");
 if(!function_exists('ftp_connect')) {
 	die("ERR: The PHP interp doesn;t have ftp library compiled in.");
 }
@@ -31,14 +31,22 @@ var_dump("WARNING: did you define the config? (if yes, strip this marker)");
 		'pw' 		=> '',
 		'dir'		=> '',
 		'ldir'		=> '',
+		'dir2'		=> '', # relative to first
 		'fake'		=> true,
+		'oldest'	=> time() -(60 * 60 *3),
+		'session'	=> false,
 				);
 
-	$ret	=getopt('r');
+	$ret	=getopt('rs');
 	if(array_key_exists('r', $ret)) {
 		print("Altering live site is enabled..\n");
 		$out['fake']=false;
 	}
+	if(array_key_exists('s', $ret)) {
+		print("Destroying old essions is enabled..\n");
+		$out['session']=true;
+	}
+
 	date_default_timezone_set('Europe/London');
 
 	return $out;
@@ -74,6 +82,15 @@ if($opts['fake']) {
 		}
 	}
 }
+if($opts['session']) {
+	ftp_chdir($ftp, $opts['dir2']);
+	$rfiles	= ftp_rawlist($ftp, '.', false );
+	$rfiles	= purge_difference($rfiles, $opts);
+	print("Deleting ".count($rfiles)." files from log.\n");
+	array_map(function($i) { ftp_delete($GLOBALS['ftp'], $i); }, $rfiles);
+}
+
+
 ftp_close($ftp);
 
 
@@ -140,6 +157,25 @@ function dir_difference($lfiles, $rfiles) {
 	}
 	return $upload;
 }
+
+function purge_difference($rfiles, $opts) {
+	$out		=array();
+
+	foreach($rfiles as $k=>$f) {
+		$rside	= parse_ls( $f);
+		if($rside['name']=='.' || $rside['name']=='..') {
+			continue;
+		}
+		if(preg_match('/^[0-9.]+\.log$/', $rside['name'])) {
+			$out[] =$rside['name'];
+		}
+		if(preg_match('/^sess_.*$/', $rside['name']) && $rside['mtime'] < $opts['oldest'] ) {
+			$out[] = $rside['name'];			
+		}
+	}
+	return $out;
+}
+
 
 /**
 array(3) {
@@ -211,4 +247,3 @@ function parse_ls($raw) {
 	return $out;
 }
 
-?>
