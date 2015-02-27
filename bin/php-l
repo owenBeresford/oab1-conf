@@ -1,0 +1,15 @@
+#!/bin/bash
+# written to be linked into various editors
+php=/usr/bin/php
+suffix='*php'
+
+echo -n "Running from "
+pwd
+find . -name "$suffix" 2>/dev/null 1>/tmp/php_files
+
+for x in `cat /tmp/php_files`;  do 
+	$php -l $x; 
+done
+
+rm /tmp/php_files
+
