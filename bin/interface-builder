@@ -1,0 +1,258 @@
+#!/usr/bin/env php5
+<?php
+error_reporting(~1);
+# im not sure this is portable, hohmm.
+# im using the symfony bootstrap
+require('/var/www/owenberesford.me.uk/sf2/app/autoload.php' );
+if(!class_exists('ReflectionParameter')) {
+	die("Code generation requires Reflection classes, these are normally built in.  Please look at your local config and install.");
+}
+
+# +++plan:+++
+# getopts for filename
+# locat file
+# require it
+# check if class or die
+# list methods
+# emit template interface file, in same namespace
+#
+$opts  	= getopt("i:o");
+if(count($opts)==0) {
+	die("You must supply the class you wish to copy to an interface");
+}
+$ib		= (new InterfaceBuilder($opts))->loadClass();
+$ib->renderTemplate($ib->listMethods());
+$ib->writeFile();
+
+
+/**
+ * InterfaceBuilder 
+ * This is poor OO, as its by itself. If you want to use this, please 
+ * put some of the methods in other classes, and use your frameworks fileWrite etc
+ * 
+ * @package 
+ * @version $id$
+ * @author oab1 / Owen Beresford / owen@iceline.ltd.uk  
+ * @license AGPL {@link http://www.gnu.org/licenses/agpl-3.0.html}
+ */
+class InterfaceBuilder
+{
+	protected $code;
+	protected $infile;
+	protected $outfile;
+ 
+	/**
+	 * __construct
+	 * 
+	 * @param mixed $opts 
+	 * @return <self>
+	 */
+	function __construct($opts) {
+		$this->code='';
+		$this->settings($opts);
+	}
+
+	/**
+	 * mapInput
+	 * 
+	 * @param mixed $in 
+	 * @param mixed $full 
+	 * @return <self>
+	 */
+	function mapInput($in, $full) {
+		//$file	=basename($file, IB_SUFFIX);
+		$temp	=glob(getcwd().DIRECTORY_SEPARATOR.$in."*" );
+		if( $temp) {
+			return $temp[0];
+		} else {
+# extend to walk the nampespace into lower dirs, 
+# look at the SF class loader if stuck
+			throw new FileException( "No file in cwd found ".$full);
+		}
+	}
+
+	/**
+	 * settings
+	 * 
+	 * @param mixed $opts 
+	 * @return <self>
+	 */
+	function settings($opts) {
+		$infile="";
+
+		$file	= $opts['i'];
+		if(strpos($opts['i'], '\\')!==false) {
+			$temp=explode('\\', $opts['i']);
+			$file=array_pop($temp);
+		}
+		$infile	= $this->mapInput($file,  $opts['i']);		
+
+		$outfile='';
+		if(isset($opts['o'])) {
+			$outfile=$opts['o'];
+		} else {
+			$outfile =str_replace( ".php", "Interface.php", $infile);
+		}	
+		$this->outfile=$outfile;
+		$this->infile=$infile;
+		$this->class =$opts['i'];
+		return $this;
+	}
+
+	/**
+	 * loadClass
+	 * 
+	 * @return <self>
+	 */
+	function loadClass() {
+		try {
+			require($this->infile);
+		} catch (\Exception $e) {
+			throw new ClassException("No class found in file ".$this->infile);
+		}
+		if(!class_exists($this->class)) {
+			throw new ClassException("No class found in file ".$this->infile);
+		}
+		return $this;
+	}
+	
+	/**
+	 * listMethods
+	 * 
+	 * @return <self>
+	 */
+	function listMethods() {
+
+		$api= get_class_methods($this->class);
+		$api2=array();
+		foreach( $api as $v ) {
+			$refl= new ReflectionMethod($this->class, $v );
+
+			if($refl->isConstructor() || $refl->isDestructor( )) {
+				continue;
+			}
+			if($refl->isAbstract()) {
+				continue;
+			}
+			if(preg_match('/^set.+|^get.+/', $v) ) {
+				continue;
+			}
+			$api2[]=$v;
+		}
+		return $api2;
+	}
+	
+	/**
+	 * returnTemplate
+	 * 
+	 * @param mixed $list 
+	 * @return <self>
+	 */
+	function renderTemplate($list) {
+		$code='';
+		$decl="";
+
+		foreach($list as $v) {
+			$refl= new ReflectionMethod($this->class, $v );
+
+			$code.="\t";
+# do we want to list abstracts?
+# we do for finals and static
+			$temp= $refl->getModifiers();
+			if($temp & ReflectionMethod::IS_ABSTRACT) {
+				$temp-= ReflectionMethod::IS_ABSTRACT;
+			}
+			$code.=implode(' ', Reflection::getModifierNames($temp));
+			$code.=" function ";
+			$code.=$v;
+			$code.="(";
+			$param=array();
+			foreach($refl->getParameters() as $v2) {
+				$class=$v2->getClass();
+				$param[]= $this->mapParam($v2, $class);
+				$decl.=$this->mapDecl($v2, $class);
+			}
+			$code.=implode(',',$param);
+			$code.=");\n\n";
+		}
+	
+		$ns		=substr($this->class, 0, strrpos($this->class, '\\'));
+		$code2	=<<<EOCODE
+<?php
+namespace $ns;
+$decl
+
+/**
+ * {$this->class}Interface 
+ * 
+ * @package 
+ * @version \$id$
+ * @author oab1 / Owen Beresford / owen@iceline.ltd.uk  
+ * @license AGPL {@link http://www.gnu.org/licenses/agpl-3.0.html}
+ */
+interface {$this->class}Interface 
+{
+
+$code
+}
+
+EOCODE;
+		$this->code=$code2;
+		return $code2;
+	}
+
+	/**
+	 * mapDecl
+	 * 
+	 * @param mixed $param 
+	 * @return <self>
+	 */
+	function mapDecl($param, $class) {
+		if($class) {
+			return "use ".$class->name.";\n";
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * mapParam
+	 * 
+	 * @param mixed $param 
+	 * @return <self>
+	 */
+	function mapParam($param, $class) {
+		$t="";
+		if($class) {
+			$t.=$class->name;
+		}
+		$t.=" $";
+		$t.=$param->name;
+
+		return $t;
+	}
+	
+	/**
+	 * getTemplate
+	 * 
+	 * @return <self>
+	 */
+	function getTemplate() {
+		return $this->code;
+	}
+
+	/**
+	 * writeFile
+	 * 
+	 * @return <self>
+	 */
+	function writeFile() {
+		$hndl=fopen($this->outfile, "x");
+		if(!is_resource($hndl)) {
+			throw new FileException("File '".$this->outfile."' exists already.");
+		}
+		fwrite($hndl, $this->code, strlen($this->code));
+		fclose($hndl);
+	}
+}
+
