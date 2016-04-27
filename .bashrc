@@ -90,7 +90,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias cd..="cd .."
 export PATH=~/bin/:$PATH
-alias mailarchive='archivemail --copy -d 7 -P~/.archivemailrc imaps://\"owenberesford-AT-fastmail.fm\"@mail.messagingengine.com:993/'
+alias mailarchive='archivemail --copy -d 7 -P~/.archivemailrc imaps://\"owenberesford@fastmail.fm\"@mail.messagingengine.com:993/'
+alias push='ssh owenberesford.me.uk@ssh.owenberesford.me.uk'
+alias test003='ssh -i ~/.ssh/gc/id_rsa owenb@130.211.65.121'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

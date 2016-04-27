@@ -1,7 +1,5 @@
 " PDV (phpDocumentor for Vim)
 " ===========================
-" Version 1.1.5 
-"    hacks by oab1, for oab1
 "
 " Version: 1.1.4
 " 
@@ -152,7 +150,7 @@ let g:pdv_re_array  = "^array *(.*"
 let g:pdv_re_int    = '^[0-9]\+'
 let g:pdv_re_float  = '^\d\+\.\d\+'
 let g:pdv_re_string = "['\"].*"
-let g:pdv_re_bool   = "\(true\|false\)"
+let g:pdv_re_bool = "\(true\|false\)"
 
 
 let g:pdv_re_indent = '^\s*'

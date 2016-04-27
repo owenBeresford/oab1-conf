@@ -1,2 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/var/www/owenberesford.me.uk/sf2/src/icelineLtd/BehatDemoBundle/Services'
+let g:netrw_dirhist_2='/var/www/owenberesford.me.uk/sf2/src/icelineLtd/PDORESTBundle/Model'
+let g:netrw_dirhist_3='/var/www/owenberesford.me.uk/sf2/src/icelineLtd/PDORESTBundle'
+let g:netrw_dirhist_4='/var/www/owenberesford.me.uk/sf2/src/icelineLtd'
+let g:netrw_dirhist_5='/var/www/owenberesford.me.uk/sf2/src'
+let g:netrw_dirhist_6='/home/owen/punit/punit'
