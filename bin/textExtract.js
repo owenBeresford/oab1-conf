@@ -1,6 +1,23 @@
 // requires jquery in master doc
 // $('body').append('<script src="http://owenberesford.me.uk/asset/textExtract.js"></script>')
 
+/*
+ * Library to extract text from HTML docs && JS strings from embedded JS.
+ * This is purely client side so will run after angular etc.   I think this is the best way to solve this problem.
+ * Will open a new window with what it finds.
+ * Execution time: can control via "RECURSE_DEPTH" && by replacing slow code
+ * THIS IS TEST CODE, DO NOT USE IN PRODUCTION 
+ * 
+ *
+ * @package 
+ * @version $id$
+ * @TODO think about linked JS modules
+ * @TODO make the recursion more efficient
+ * @TODO find a nice person with HTTPS to host this, so text can be extracted from HTTPS sites 
+ * @author oab1 / Owen Beresford / owen@iceline.ltd.uk  
+ * @license AGPL {@link http://www.gnu.org/licenses/agpl-3.0.html} 
+*/
+
 // hide code  :-)
 (function() {
 
