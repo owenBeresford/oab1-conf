@@ -3,9 +3,10 @@
 error_reporting(~1);
 # im not sure this is portable, hohmm.
 # im using the symfony bootstrap
-require('/var/www/owenberesford.me.uk/sf2/app/autoload.php' );
+require('/var/www/sf2-test4/app/autoload.php' );
+
 if(!class_exists('ReflectionParameter')) {
-	die("Code generation requires Reflection classes, these are normally built in.  Please look at your local config and install.");
+	die("Code generation requires Reflection classes, these are normally built in.  Please look at your local PHP config and installation.");
 }
 
 # +++plan:+++
@@ -16,10 +17,28 @@ if(!class_exists('ReflectionParameter')) {
 # list methods
 # emit template interface file, in same namespace
 #
-$opts  	= getopt("i:o");
+$opts  	= getopt("i:ohp");
 if(count($opts)==0) {
 	die("You must supply the class you wish to copy to an interface");
 }
+if(isset($opts['h'])) {
+	echo <<<EOPHP
+Tool to build interface files, if you are writing things in the wrong order.
+This maps a concrete class and generates an interface for it.
+
+Usage: interface-builder -i <class name> [-p] [-h] [-o output file]
+  -p ~ list functions starting get/set, as these may or may not be important.  Off by default.
+  -i ~ file name of the class to build the interface from
+  -o ~ output file name; optional, I can guess... 
+  -h ~ this text
+outputs, any errors, the new PHP file.
+
+If your IDE does things like this already, please shout out, I may buy a license for it.
+
+EOPHP;
+	exit(0);
+}
+
 $ib		= (new InterfaceBuilder($opts))->loadClass();
 $ib->renderTemplate($ib->listMethods());
 $ib->writeFile();
@@ -40,6 +59,7 @@ class InterfaceBuilder
 	protected $code;
 	protected $infile;
 	protected $outfile;
+	protected $pedantic;
  
 	/**
 	 * __construct
@@ -92,7 +112,8 @@ class InterfaceBuilder
 			$outfile=$opts['o'];
 		} else {
 			$outfile =str_replace( ".php", "Interface.php", $infile);
-		}	
+		}
+		$this->pedantic=isset($opts['p']);
 		$this->outfile=$outfile;
 		$this->infile=$infile;
 		$this->class =$opts['i'];
@@ -134,7 +155,7 @@ class InterfaceBuilder
 			if($refl->isAbstract()) {
 				continue;
 			}
-			if(preg_match('/^set.+|^get.+/', $v) ) {
+			if($this->pedantic && preg_match('/^set.+|^get.+/', $v) ) {
 				continue;
 			}
 			$api2[]=$v;

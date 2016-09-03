@@ -1,0 +1,162 @@
+#!/usr/bin/env php5
+<?php
+
+/**
+ * RequiredUseStatement 
+ * 
+ * @package 
+ * @version $id$
+ * @author oab1 / Owen Beresford / owen@iceline.ltd.uk  
+ * @license AGPL {@link http://www.gnu.org/licenses/agpl-3.0.html}
+ */
+error_reporting(~1);
+# im not sure this is portable, hohmm.
+# im using the symfony bootstrap
+require('/var/www/sf2-test4/app/autoload.php' );
+
+$opts  	= getopt("i:ogh");
+if(count($opts)==0) {
+	die("You must supply the class you wish to list dependancies.");
+}
+if(isset($opts['h'])) {
+	echo <<<EOPHP
+Tool to pull out *type names* that may need to be added in the 'use' statements list.
+Tool is using regex not any AST parsing.
+Tool doesn' detect if the use statements are present, in current version.
+
+Usage: use-extract -i <class name> [-g] [-h]
+  -g ~ *guess* all classes without a namespace are in the current namespace.
+  -i ~ file name of the class to analyse
+  -h ~ this text
+outputs: on stdout
+
+If your IDE does things like this already, please shout out, I may buy a license for it.
+
+EOPHP;
+	exit(0);
+}
+$ib		= (new RequiredUseStatement($opts));
+array_map(function($a) { print "$a\n"; }, $ib->extractData());
+
+class RequiredUseStatement 
+{
+	protected $name;
+	protected $guess;
+
+	/**
+	 * __construct
+	 * 
+	 * @param array $opts 
+	 * @return <self>
+	 */
+	function __construct(array $opts) {
+		$this->name=$opts['i'];
+		$this->guess=false;
+		if(isset($opts['g'])) { $this->guess=true; }
+		if(!is_file($this->name) || !is_readable($this->name)) {
+			throw new \Exception("Can't read file ".$this->name);
+		}
+	}
+
+	/**
+	 * extractData ~ extract the type names
+	 * 
+	 * @return array of type names
+	 */
+	function extractData(){
+		$raw=file_get_contents($this->name);
+		$classes=[]; $tmp=[]; $namespace=null;
+		if(preg_match('/namespace[ \t]+([a-z_A-Z0-9\\\\]+);/', $raw, $tmp)>0) {
+			$namespace=$tmp[1]."\\";
+		}
+
+		if(preg_match_all('/function\b.+([^:$][a-z_A-Z0-9]+[ ,]+)*/', $raw, $tmp)>0) {
+			$classes=array_merge($classes, $this->_parse1($tmp));
+		}
+		if(preg_match_all('/implements[ \t]+[a-z_A-Z0-9\\\\]+/', $raw, $tmp)>0) {
+			$classes=array_merge($classes, $this->_parse2($tmp));
+		}
+		if(preg_match_all('/new[ \t]+[a-z_A-Z0-9\\\\]+\(/', $raw, $tmp)>0) {
+			$classes=array_merge($classes, $this->_parse3($tmp));
+		}
+		$classes=array_unique($classes);
+
+		foreach($classes as $k=>$v) {
+			if($v=='StdClass') {
+				$classes[$k]='';
+				continue;
+			}
+			if($v{0}=='\\') {
+				continue;
+			}
+			$tmp=explode('\\', $v);
+			if(count($tmp)>1) {
+				continue;
+			}
+			if($this->guess && $namespace) {
+				$classes[$k]=$namespace.$v;	
+			}
+		}
+		$classes=array_filter($classes, function($a) { return !($a==='' || $a===false || $a===null); });
+		return $classes;
+	}
+
+
+	/**
+	 * _parse1
+	 * 
+	 * @param mixed $raw 
+	 * @access private
+	 * @return <self>
+	 */
+	private function _parse1($raw) {
+		$raw=array_map(function ($a ) { return trim(substr($a, strpos($a, '('))); }, $raw[0] );
+		$raw=str_replace(['function', '(', ')', ';', '{' ], ['', '', '', '', ''], $raw );
+		$bits=[]; $out=[];
+
+		foreach($raw as $v) {
+			$c=preg_match_all('/([a-zA-Z0-9_\\\\]+)[ \t]+\$[a-zA-Z0-9_]+,*/', $v, $bits);
+			if($c>0) {
+				$out=array_merge($out, $bits[1]);
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * _parse2
+	 * 
+	 * @param mixed $raw 
+	 * @access private
+	 * @return <self>
+	 */
+	private function _parse2($raw) {
+		$raw=preg_replace('/class [a-zA-Z0-9]+ 0/', '', $raw[0]);	
+		$raw=str_replace(['class', '{', 'implements', 'extends' ], ['', '', '', ''], $raw);
+
+		$raw=array_map(function($a) { return trim($a); }, $raw);
+		$bits=[]; $out=[];
+		foreach($raw as $v) {
+			$c=preg_match_all( '/([a-zA-Z0-9_\\\\]+)[ \t]*,/', $v, $bits);
+			if($c>0) {
+				$out=array_merge($out, $bits[1]);
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * _parse3
+	 * 
+	 * @param mixed $raw 
+	 * @access private
+	 * @return <self>
+	 */
+	private function _parse3($raw) {
+		$raw=str_replace(['new', '(' ], ['', ''], $raw[0]);
+		$raw=array_map(function($a) { return trim($a); }, $raw);
+		return $raw;	
+	}
+
+}
+
