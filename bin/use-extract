@@ -10,9 +10,6 @@
  * @license AGPL {@link http://www.gnu.org/licenses/agpl-3.0.html}
  */
 error_reporting(~1);
-# im not sure this is portable, hohmm.
-# im using the symfony bootstrap
-require('/var/www/sf2-test4/app/autoload.php' );
 
 $opts  	= getopt("i:ogh");
 if(count($opts)==0) {

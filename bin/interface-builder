@@ -1,22 +1,9 @@
 #!/usr/bin/env php5
 <?php
 error_reporting(~1);
-# im not sure this is portable, hohmm.
-# im using the symfony bootstrap
-require('/var/www/sf2-test4/app/autoload.php' );
-
 if(!class_exists('ReflectionParameter')) {
 	die("Code generation requires Reflection classes, these are normally built in.  Please look at your local PHP config and installation.");
 }
-
-# +++plan:+++
-# getopts for filename
-# locat file
-# require it
-# check if class or die
-# list methods
-# emit template interface file, in same namespace
-#
 $opts  	= getopt("i:ohp");
 if(count($opts)==0) {
 	die("You must supply the class you wish to copy to an interface");
