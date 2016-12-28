@@ -1,6 +1,6 @@
-#!/usr/bin/env php5
+#!/usr/bin/env php
 <?php
-error_reporting(~1);
+error_reporting(9999999999);
 if(!class_exists('ReflectionParameter')) {
 	die("Code generation requires Reflection classes, these are normally built in.  Please look at your local PHP config and installation.");
 }
@@ -26,10 +26,10 @@ EOPHP;
 	exit(0);
 }
 
-$ib		= (new InterfaceBuilder($opts))->loadClass();
+$ib		= (new InterfaceBuilder($opts));
+$ib->loadClass();
 $ib->renderTemplate($ib->listMethods());
 $ib->writeFile();
-
 
 /**
  * InterfaceBuilder 

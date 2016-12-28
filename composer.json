@@ -44,6 +44,12 @@
     },
 	 "config": {
         "bin-dir": "bin/"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/sebastianbergmann/phpunit-skeleton-generator.git"
+        }
+    ]
 
 }
