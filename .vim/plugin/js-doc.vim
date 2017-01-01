@@ -1,10 +1,19 @@
+" oab1 remake of the addJSDoc. Changes:
+" * make compliant to Javadoc manual (strip @function and @name)
+" * Make the comment below the name, its more readable
+" * Fix function name parsing for object literal
+" * Improve definition of a function name (allow _ and numbers)
+" * LTB: a thing to understand types on return statement without using a JS parser
+"
+" _++ Original header ++
 " https://gist.github.com/sunvisor/3903772
 " JSDoc形式のコメントを追加(functionの行で実行する)
 " hogeFunc: function() の形式と function hogeFunc() に対応
 " 関数定義でない場合は、コメントだけ出力する
 function! AddJSDoc()
-    let l:jsDocregex = '\s*\([a-zA-Z]*\)\s*[:=]\s*function\s*(\s*\(.*\)\s*).*'
-    let l:jsDocregex2 = '\s*function \([a-zA-Z]*\)\s*(\s*\(.*\)\s*).*'
+    let l:jsDocregex = '\s*\([a-zA-Z_0-9]*\)\s*[:=]\s*function\s*(\s*\(.*\)\s*).*'
+    let l:jsDocregex2 = '\s*function \+\([a-zA-Z_0-9]*\)\s*(\s*\(.*\)\s*).*'
+    let l:jsDocregex3 = '*\.\([a-zA-Z_0-9]\).*'
 
     let l:line = getline('.')
     let l:indent = indent('.')
@@ -25,10 +34,11 @@ function! AddJSDoc()
     call add(l:lines, l:space. '/**')
     if l:flag
         let l:funcName = substitute(l:line, l:regex, '\1', "g")
+        let l:funcName = substitute(l:funcName, l:jsDocregex3 , '\1', "g")
         let l:arg = substitute(l:line, l:regex, '\2', "g")
         let l:args = split(l:arg, '\s*,\s*')
         call add(l:lines, l:space . ' * ' . l:funcName)
-    call add(l:lines, l:space . ' * ' . l:desc)
+		call add(l:lines, l:space . ' * ' . l:desc)
    "     call add(l:lines, l:space . ' * @function')
         for l:arg in l:args
             call add(l:lines, l:space . ' * @param ' . l:arg)
@@ -40,4 +50,3 @@ function! AddJSDoc()
     call append(line('.')-1, l:lines)
 endfunction
 
-" JSDocのキーバインド
