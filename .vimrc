@@ -9,7 +9,7 @@ set mouse=a ruler spell
 set backspace==indent,eol,start nobackup wildmode=longest,list
 
 autocmd FileType php inoremap <C-p> <ESC>:call PhpDocSingle()<CR>i
-autocmd FileType php nnoremap <C-p> :call PhpDocSingle()<CR> “
+autocmd FileType php nnoremap <C-p> :call PhpDocSingle()<CR>
 autocmd FileType php vnoremap <C-p> :call PhpDocRange()<CR>
 
 " s/"/“/
