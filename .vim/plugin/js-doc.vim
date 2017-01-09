@@ -39,6 +39,7 @@ function! AddJSDoc()
         let l:args = split(l:arg, '\s*,\s*')
         call add(l:lines, l:space . ' * ' . l:funcName)
 		call add(l:lines, l:space . ' * ' . l:desc)
+		call add(l:lines, ' * ')
    "     call add(l:lines, l:space . ' * @function')
         for l:arg in l:args
             call add(l:lines, l:space . ' * @param ' . l:arg)
