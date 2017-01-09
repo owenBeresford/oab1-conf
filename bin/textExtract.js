@@ -1,5 +1,6 @@
 // requires jquery in master doc
 // $('body').append('<script src="http://owenberesford.me.uk/asset/textExtract.js"></script>')
+// You should create other embed strings for other JS platforms
 
 /*
  * Library to extract text from HTML docs && JS strings from embedded JS.
@@ -26,6 +27,13 @@ const RECURSE_DEPTH=4;
 display(JSON.stringify(filter2(filter1(filter3(extractText()).concat(extractJS()))), null, "\t") );
 
 
+/**
+ * extractText ~ for human readable text...
+ *  Uses recursion 
+ *
+ * @access public
+ * @return a string
+ */
 function extractText() {
 	var offset=0;
 	var buf=[];
@@ -47,6 +55,13 @@ function extractText() {
 	return buf;
 }
 
+/**
+ * extractJS
+ * extract JS literals
+ * 
+ * @access public
+ * @return a string
+ */
 function extractJS() {
 	var buf=[];
 	jQuery('script').each(extractTextLiterals);
@@ -61,6 +76,14 @@ function extractJS() {
 	return buf;
 }
 
+/**
+ * filter1
+ * Filter to strip dups
+ 
+ * @param array data
+ * @access public
+ * @return array
+ */
 function filter1(data) {
 	data=data.sort();
 	var keys=[];
@@ -72,6 +95,14 @@ function filter1(data) {
 	return keys;
 }
 
+/**
+ * filter2
+ * Apply trim() to each item
+ 
+ * @param array data
+ * @access public
+ * @return array
+ */
 function filter2(data) {
 	for (var i = 0; i < data.length; i++) {
 		data[i]=jQuery.trim( data[i] );
@@ -79,6 +110,14 @@ function filter2(data) {
 	return data;
 }
 
+/**
+ * filter3
+ * Drop strings that do not any contain words (in the loosest sense of word)
+ 
+ * @param array data
+ * @access public
+ * @return array
+ */
 function filter3(data) {
 	var out=[];
 	for (var i = 0; i < data.length; i++) {
@@ -89,6 +128,14 @@ function filter3(data) {
 	return out;
 }
 
+/**
+ * display
+ * Wrapper function create a browser window
+ 
+ * @param data ~ what to display
+ * @access public
+ * @return 0
+ */
 function display(data) {
 	var out = window.open("", "JSON array", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=780, height=200, top="+(screen.height-400)+", left="+(screen.width-840));
 	out.document.body.innerHTML = "<textarea style=\"width:90%; height:90%; margin:auto;\">"+data+"</textarea>";
