@@ -134,7 +134,8 @@ let g:pdv_re_abstract = '\(abstract\)'
 let g:pdv_re_final = '\(final\)'
 
 " [:space:]*(private|protected|public|static|abstract)*[:space:]+[:identifier:]+\([:params:]\)
-let g:pdv_re_func = '^\s*\([a-zA-Z ]*\)function\s\+\([^ (]\+\)\s*(\s*\(.*\)\s*)\s*[{;]\{0,3\}$'
+let g:pdv_re_func = '^\s*\([a-zA-Z \t]*\)function\s\+\([^ \t(]\+\)\s*(\s*\(.*\)\s*)\s*\(:\S\+\)\?\s*[{;]\{0,3\}$'
+let g:pdv_re_return = '.\+:\([a-zA-Z0-9_]\+\)\s{*'
 let g:pdv_re_funcend = '^\s*}$'
 " [:typehint:]*[:space:]*$[:identifier]\([:space:]*=[:space:]*[:value:]\)?
 let g:pdv_re_param = ' *\([^ &]*\) *&\?\$\([A-Za-z_][A-Za-z0-9_]*\) *=\? *\(.*\)\?$'
@@ -241,8 +242,8 @@ func! PhpDoc()
     if l:line =~ g:pdv_re_func
         let l:result = PhpDocFunc()
 
-    elseif l:line =~ g:pdv_re_funcend
-			let l:result = PhpDocFuncEnd()
+"    elseif l:line =~ g:pdv_re_funcend
+"			let l:result = PhpDocFuncEnd()
 
     elseif l:line =~ g:pdv_re_attribute
         let l:result = PhpDocVar()
@@ -309,6 +310,7 @@ func! PhpDocFunc()
 	let l:modifier = substitute (l:name, g:pdv_re_func, '\1', "g")
 	let l:funcname = substitute (l:name, g:pdv_re_func, '\2', "g")
 	let l:parameters = substitute (l:name, g:pdv_re_func, '\3', "g") . ","
+	let l:returns = substitute (getline("."), g:pdv_re_return, '\1', "g") 
 	let l:params = substitute (l:name, g:pdv_re_func, '\3', "g") 
 	let l:params = substitute (l:params, '[$  ]', '', "g")
     let l:scope = PhpDocScope(l:modifier, l:funcname)
@@ -321,7 +323,7 @@ func! PhpDocFunc()
     " Local indent
     let l:txtBOL = g:pdv_cfg_BOL . l:indent
 
-		exec l:txtBOL . "// " . l:scope ." ".  funcname . "(" . l:params . ") {{" . "{ " . g:pdv_cfg_EOL
+"		exec l:txtBOL . \"// \" . l:scope .\" \".  funcname . \"(\" . l:params . \")\" . g:pdv_cfg_EOL
 	
     exe l:txtBOL . g:pdv_cfg_CommentHead . g:pdv_cfg_EOL
 		" added folding
@@ -362,12 +364,17 @@ func! PhpDocFunc()
     if l:scope != ""
     	exe l:txtBOL . g:pdv_cfg_Commentn . "@access " . l:scope . g:pdv_cfg_EOL
     endif
-	exe l:txtBOL . g:pdv_cfg_Commentn . "@return " . g:pdv_cfg_ReturnVal . g:pdv_cfg_EOL
+
+	if match(l:returns, "function") ==-1
+		exe l:txtBOL . g:pdv_cfg_Commentn . "@return " . l:returns . g:pdv_cfg_EOL
+	else
+		exe l:txtBOL . g:pdv_cfg_Commentn . "@return " . g:pdv_cfg_ReturnVal . g:pdv_cfg_EOL
+	endif
 
 	" Close the comment block.
 	exe l:txtBOL . g:pdv_cfg_CommentTail . g:pdv_cfg_EOL
 
-  return l:modifier ." ". l:funcname . PhpDocFuncEndAuto()
+  return l:modifier ." ". l:funcname 
 endfunc
 
 " }}}  
