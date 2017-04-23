@@ -1,0 +1,40 @@
+{# Expects an array with
+ * titles OPTIONAL, header titles    
+ * attrib SINGULAR, non- data bits
+   * classes blah same as previous code
+   * wantStripes, to enable row stripping
+ * int keys for rows
+   * string keys for colunms (as expected from RDBMS + NoSQL)
+#}
+<table>
+{% if data.titles %}
+	<thead>
+	</tr>
+	{% for ignored, val in data.titles %}
+		<td> {{ val}} </td>
+	{% endfor %}
+	</tr>
+	</thead>
+{% else if data.tables != false %}
+	<thead>
+	</tr>
+	{% for name, ignored in data[0] %}
+		<td> {{ name }} </td>
+	{% endfor %}
+	</tr>
+	</thead>
+{% endif %}
+{% for test, row in data %}
+	{% if !(test == 'titles' || test == 'attrib') %}
+		{% if data.attrib.wantStripes %}
+		<tr class="{% cycle(['even', 'odd']) %}">	
+		{% else %}
+		<tr>	
+		{% endif %}	
+		{% for ignored, val in row %}
+			<td> {{ val}} </td>
+		{% endfor %}
+		</tr>
+	{% endif %}
+{% endfor %}
+</table>
