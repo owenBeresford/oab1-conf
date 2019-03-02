@@ -91,12 +91,14 @@ alias l='ls -CF'
 alias cd..="cd .."
 export PATH=~/bin/:$PATH
 alias mailarchive='archivemail --copy -d 7 -P~/.archivemailrc imaps://\"owenberesford@fastmail.fm\"@mail.messagingengine.com:993/'
-alias push='ssh owenberesford.me.uk@ssh.owenberesford.me.uk'
+alias push='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no owenberesford.me.uk@ssh.owenberesford.me.uk'
 
+export NODE_PATH=/usr/local/lib/node_modules
+export GIT_SSH_COMMAND="ssh -o PreferredAuthentications=password -o PreferredAuthentications=password"
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_rsa -o IdentitiesOnly=yes"
+# export GIT_SSH_COMMAND="ssh -i ~/.ssh/github_rsa -o IdentitiesOnly=yes"
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
