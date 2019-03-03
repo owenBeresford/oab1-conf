@@ -14,23 +14,24 @@ abstract class PostgresSchemaDumper {
 	/**
 	 * __construct ~ this eats a connection, to avoid lots of management on socket creation.
 	 * 
-	 * @param resource $r ~ this is the type that the docs said, i think this needs testing 
+	 * @param Resource $r ~ this is the type that the docs said, i think this needs testing 
+	 * @param Stream $o ~ where to put the output SQL
 	 * @return <self>
 	 */
-	function __construct(resource $c, Stream $o) {
+	function __construct(Resource $c, Stream $o) {
 		$this->conn=$c;
 		$this->fieldBuffer=[];
 		$this->out=$o;
 	}
 
-	public static simpleCreatePostgres(string $h, string $d, string $u, string $p):Resource {
+	public static function simpleCreatePostgres(string $h, string $d, string $u, string $p):Resource {
 		return pg_connect("host=$h dbname=$d user=$u password=$p" );
 	}
 
 // move tables with no foreign keys first
-	public abstract tableSort($in):array;
+	public abstract function tableSort($in):array;
 
-	public abstract limitClause(string $table):string;
+	public abstract function limitClause(string $table):string;
 
 
 	private function read($sql):array {
@@ -107,6 +108,8 @@ EOSQL;
 				.";\n\n";
 		}
 		fwrite($this->out, $sql, strlen($sql));
+// should I do a close here or not?
+// as it was created outside of this scope, I err to not
 	}
 }
 
