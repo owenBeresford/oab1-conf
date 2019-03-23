@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]>         <html lang="en-GB-oed" class="ie9 noJS" itemscope itemtype="http://schema.org/Article"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en-GB-oed" class="noJS" itemscope itemtype="http://schema.org/Article"> <!--<![endif]-->
+<head>
+<!-- This website is written by a guy who claims to have lots of specialised technical skills, but this website only partially demonstrates them.  This website is a vehicle for about 150,000 words, please read some of them. -->
+<title>Presentation Assert demo</title>
+<meta http-equiv="X-UA-Compatible" content="IE=11" />
+<meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="en-GB-oed" />
+<meta name="Generator" content="iceline webkit 2.1" />
+<meta name="Author" content="Owen Beresford" />
+<meta name="Description" content="unit test">
+<meta itemprop="name" content="SVG notes deux">
+<meta itemprop="description" content="Details on structure on SVG as I needed to edit some by hand.">
+<!-- meta name="twitter:card" content="summary_large_image" -->
+<meta name="twitter:site" content="@channelOwen">
+<meta name="twitter:title" content="SVG notes deux">
+<meta name="twitter:description" content="Details on structure on SVG as I needed to edit some by hand.">
+<meta name="twitter:creator" content="@channelOwen">
+<meta property="og:title" content="SVG notes deux" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://owenberesford.me.uk/resource/sums-demo" />
+<meta property="og:description" content="Details on structure on SVG as I needed to edit some by hand." />
+<meta property="og:site_name" content="OwenBeresford's very wordy site" />
+<meta property="article:published_time" content="22nd of Nov, 23:19:49" />
+<meta property="article:modified_time" content="2nd of Dec, 23:12:46" />
+<!-- meta property="article:tag" content="Article Tag" /  -->
+
+<link rel="stylesheet" type="text/css" href="http://owenberesford.me.uk/asset/ob1.min.css" />
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/qunit/qunit-2.9.2.css" integrity="sha256-toepOe5D+ddXgUOGsijnhymZna5bakJ0gwRC/3bK1b0=" crossorigin="anonymous"/>
+<!--[if IE]>
+<script type="text/javascript" src="http://owenberesford.me.uk/asset/es5-shim.js" ></script>
+<![endif]-->
+<script type="text/javascript" src="http://owenberesford.me.uk/asset/ob1.min.js" ></script>
+<script type="text/javascript" src="../lib/TinyColor.js" ></script>
+<script type="text/javascript" src="../lib/PresentationAsserts.js" ></script>
+<script src="https://code.jquery.com/qunit/qunit-2.9.2.js" integrity="sha256-EQ5rv6kPFPKQUYY+P4H6fm/le+yFRLVAb//2PfBswfE=" crossorigin="anonymous"></script>
+
+<style rel="stylesheet" type="text/css" >
+ .h4_page p { font-family: 'ubuntu'; font-size: 10pt; direction:ltr; } 
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6 { font-family: 'ubuntu'; direction:ltr; }
+@media screen and (min-resolution: 150dpi) {
+	.h4_page p, .h4_page li, .h4_page span { font-size:200%; }
+    .h4_page p span { font-size:100%; }
+	li { margin:10px; }
+	h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6 { font-size:250%; }
+}
+</style>
+</head>
+<body id="body">
+<fieldset class="outer_menu articleHeader">
+<legend></legend>
+<nav>
+<div id="tinyScreen" class="addReading">
+<h1>tester for PresentationAsserts.</h1>
+<a class="button" href="/resource/site-chart">Sitemap</a> <a href="http://owenberesford.me.uk/resource/rss"><i class="fa fa-rss" aria-hidden="true"></i></a>
+ Share: <a href="http://twitter.com/home?status=I+think+this+is+important+http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo" title="Share this resource on your twitter account." target="_blank"> <i class="fa fa-twitter" aria-hidden="true"></i></a> 
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo&amp;title=Contact+me.&amp;summary=Read+an+exciting+article+on+my+site.&amp;source=owenberesford.me.uk" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+<a target="_blank" title="Share this resource over googleplus." href="https://m.google.com/app/plus/x/?v=compose&amp;content=I+think+this+is+important+http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo"> <i class="fa fa-google-plus-square" aria-hidden="true"></i></a> 
+</div>
+<div id="bigScreen" class="row">
+<div class="h4_title column"><header><h1>Presentation Asserts.</h1></header>
+
+
+<p id="shareGroup" class="addReading"> <a href="http://owenberesford.me.uk/resource/rss" title="Access the sites RSS feed."> <i class="fa fa-rss" aria-hidden="true"></i> </a> Share: 
+<!-- <iframe src="http://www.facebook.com/widgets/like.php?href=http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fcontact-me" ><img src="/asset/small-facebook-logo.png" alt="Share this resource on your FB account." /></iframe>  -->
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo&amp;title=Contact+me.&amp;summary=Read+an+exciting+article+on+my+site.&amp;source=owenberesford.me.uk" title="Share this resource with your linked-in account." target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i> </a>
+<a target="_blank" title="Share this resource on your twitter account." href="http://twitter.com/home?status=I+think+this+is+important+http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo"> <i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+<a target="_blank" title="Share this resource over googleplus." href="https://plus.google.com/share?url=http%3A%2F%2Fowenberesford.me.uk%2Fresource%2Fsums-demo&amp;hl=en"><i class="fa fa-google-plus-square" aria-hidden="true"></i> </a> 
+&shy; Follow <a hreP="https://twitter.com/@publishowen" class="button"><i class="fa fa-twitter" aria-hidden="true"></i>@publishowen</a> 
+edited <time datetime="1509913357">5th of Nov, 20:22:37</time>
+ 
+</p></div>
+<fieldset class="h4_menu column">
+<legend><a id="pageMenu"><i class="fa fa-bars" aria-hidden="true"></i> </a></legend>
+<ul class="h4_lean">
+</ul>
+<br />
+
+</fieldset>
+</div>
+</nav>
+</fieldset>
+ </div>
+<h2 id="sample" title="gdfgdg"> ¿hello, hello?</h2>
+
+<div id="group1" style="font-size:3.131rem;">
+<span id="test1" style="font-size:12pt;">test 1</span>
+<span id="test2" style="font-size:15ppx;">test 2</span>
+<span id="test3" style="font-size:2em;">test 3</span>
+<span id="test4" style="font-size:2rem;">test 4</span>
+<span id="test5" style="font-size:10%;">test 5</span>
+<span id="test6" style="font-size:10vh;">test 6</span>
+<span id="test7" style="font-size:10vw;">test 7</span>
+<span id="test8" style="font-size:1cm;">test 8</span>
+<span id="test9" style="font-size:20mm;">test 9</span>
+<span id="test10" style="font-size:0.3in;">test 10</span>
+<span id="test11" style="font-size:10pc;">test 11</span>
+<span id="test12" style="font-size:10ch;">test 12</span>
+<span id="test13" style="font-size:1ex;">test 13</span>
+<span id="test14" style="font-size:10vmin;">test 14</span>
+<span id="test15" style="font-size:1em;"></span>
+<span id="test16" >test 16</span>
+<span id="test17" style="font-size:1em; display:none;">test 17</span>
+</div>
+
+<div id="group2" style="font-family:serif;">
+<span id="test100" style="font-family:serif;">test 100</span>
+<span id="test101" style='font:italic 1.2em "Fira Sans", serif;'>test 101</span>
+<span id="test102" style='font: 1.2em "Fira Sans", sans-serif;'>test 102</span>
+<span id="test103" style="font: italic small-caps bold 16px/2 cursive;">test 103</span>
+<span id="test104" style="font: small-caps bold 24px/1 sans-serif;">test 104</span>
+<span id="test105" style="font: caption;">test 105</span>
+<span id="test106" style="font: italic bold 12px/30px Georgia, serif;">test 106</span>
+<span id="test107">test 107</span>
+<span id="test108" style='font-family: "Fira Sans", serif;'>test 108</span>
+</div>
+
+<div id="group3" style="color:#ff3333;">
+<span id="test200" style="color:#3e3e3eff;">test 200</span>
+<span id="test201" style="color:#3e3e3e;">test 201</span>
+<span id="test202" style="color:#333;">test 202</span>
+<span id="test203" style="color:red;">test 203</span>
+<span id="test204" style="color:rgb(255,30,30);">test 204</span>
+<span id="test205" style="color:rgba(255,30,30, 0.3);">test 205</span>
+<span id="test206" style="color:hsl(10, 55%, 20%);">test 206</span>
+<span id="test207" style="color:hsla(120,100%,50%,0.3);">test 207</span>
+<span id="test208" style="color:transparent">test 208</span>
+<span id="test209">test 209</span>
+</div>
+
+<div id="group4" style="background-color:#ff3333;">
+<span id="test300" style="background-color:#3e3e3eff;">test 300</span>
+<span id="test301" style="background-color:#3e3e3e;">test 301</span>
+<span id="test302" style="background-color:#333;">test 302</span>
+<span id="test303" style="background-color:red;">test 303</span>
+<span id="test304" style="background-color:rgb(255,30,30);">test 304</span>
+<span id="test305" style="background-color:rgba(255,30,30, 0.3);">test 305</span>
+<span id="test306" style="background-color:hsl(10, 55%, 30%);">test 306</span>
+<span id="test307" style="background-color:hsla(130,100%,50%,0.3);">test 307</span>
+<span id="test308" style="background-color:transparent">test 308</span>
+<span id="test309">test 309</span>
+</div>
+
+<div id="group5" >
+<input title="dfgd gd gdgd g" id="test400"  work="true" />
+<input title="dfg" id="test401" work="false" />
+<input id="test402" work="false" />
+</div>
+
+<div id="group6" >
+<img src="#" alt="dfgd gd gdgd g" id="test500"  work="true" />
+<img src="#" alt="dfg" id="test501" work="false" />
+<img src="#" id="test502" work="false" />
+</div>
+
+<div id="group7" >
+<span id="test600"  work="true" >sdfsdfhellodgdgdgdg</span>
+<span title="dfg" id="test601" work="false" >gsddfgdfgd</span>
+<span id="test602" work="false" ></span>
+<span id="test603"  work="false" >sdfsdfhegdfgdgdfgd gdgdgdgd dgd gd gdgdg dg dgdgadgadgadgadfg adfga dfgad gadgadf gadfga dfgad gadg adgad gadgadfga dgadgadga dgad gadg adg adgad gad gadgadfgadga gadg adg adgad gadg adgadgad gdg adga ga dgad gadg adg agad adg adga dga ga gag adgad gadhgadgadgadgadgadgadga dgad gadg adgad gad adgadga dgadgad gadg adgad gadg adgadgadgadgadgadgadga gGDA GDSARGYHAG  DSHGADG DFHGADGHADHADH ADHAD AD ADshsf jdgjd jdgj dgj dgjd gj  dg  odgdgdgdg</span>
+</div>
+
+<div id="group8" >
+<span id="test700" dir="ltr" >dgdfgdgdgdgdfg test700 </span>
+<span id="test701" dir="rtl" >dgdfgdgdgdgdfg test701 </span>
+<span id="test702" style="direction:ltr;" >dgdfgdgdgdgdfg test702 </span>
+<span id="test703" style="direction:rtl;" >dgdfgdgdgdgdfg test703 </span>
+<div dir="rtl" id="outer700">
+<span id="test704" >dgdfgdgdgdgdfg test704 </span>
+<span id="test705" style="direction:ltr;" >dgdfgdgdgdgdfg test705 </span>
+</div>
+</div>
+
+<div id="offscreen1" style="margin-right:-1000px">
+</div>
+
+<div>
+<span id="test900" >sdfsdfhellodgdgdgdg</span>
+<label id="test901" for="test900">dgdg dgd gdg</label>
+
+</div>
+
+<script>
+// jQUERY: $(document).ready(function() {...});
+// ripped from https://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
+function ready(callback) {
+    if (document.readyState!='loading') { callback();}
+    else if (document.addEventListener) { document.addEventListener('DOMContentLoaded', callback); }
+    else document.attachEvent('onreadystatechange', function(){
+        if (document.readyState=='complete') { callback(); }
+    });
+}
+
+function biblio_test() {
+	return QUnit.test("Format test and encoding test for PresentationAssert", test_impl);   
+}
+
+function test_impl(a) {
+	"use strict";
+	const ASSERT= PresentationAsserts.create(tinycolor);
+	const SELECT='#sample';
+	try {
+		// initial smoke test to confirm no crash
+		// also this is how to DI the tinycolor module, which in a browser adds itself to window
+		ASSERT.fontSize(SELECT) ;
+		ASSERT.fontName(SELECT) ;
+		ASSERT.itemColour(SELECT) ;
+		ASSERT.itemBGColour(SELECT) ;
+		ASSERT.itemColourConstrast(SELECT) ;
+		ASSERT.itemTitlePresent(SELECT);
+		ASSERT.itemAltTextPresent(SELECT+"2");
+		ASSERT.itemHasText(SELECT, /hello/);
+		ASSERT.itemTextDirection(SELECT);
+		ASSERT.itemTextLanguage(SELECT);
+		ASSERT.itemScreenLocation(SELECT);
+		ASSERT.itemOnScreen(SELECT, true);
+		ASSERT.detectOverlaps(SELECT, SELECT+"2");
+		ASSERT.allLabelsAreWellFormed();
+		a.ok( 1, "Ran smoke test, where nothing crashed ✔");
+		// yes i am aware that this is a poor unit; see next for actual unit tests
+		// but if it dies I wanna know first
+	} catch(e) {
+		a.ok(0, "smoke test [ERR] "+e.message+"<br />"+e.stack);
+	}
+
+	for(let i=1; i<18; i++) {
+		try {
+			let t=ASSERT.fontSize('#test'+i);
+			a.ok(t, "exec group1, test"+i+" successfully ✔ " +t );
+		} catch(e) {
+			a.ok(0, "exec group1, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=0; i<9; i++) {
+		try {
+			let t=ASSERT.fontName('#test10'+i);
+			a.ok(t, "exec group2, test10"+i+" successfully ✔ "+t );
+		} catch(e) {
+			a.ok(0, "exec group2, test10"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=200; i<210; i++) {
+		try {
+			let t=ASSERT.itemColour('#test'+i);
+			a.ok(t, "exec group3, test"+i+" successfully ✔ "+t );
+		} catch(e) {
+			a.ok(0, "exec group3, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=300; i<309; i++) {
+		try {
+			let t=ASSERT.itemBGColour('#test'+i);
+			a.ok(t, "exec group4, test"+i+" successfully ✔ "+t );
+		} catch(e) {
+			a.ok(0, "exec group4, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=400; i<403; i++) {
+		try {
+			let t=ASSERT.itemTitlePresent('#test'+i);
+			if(document.getElementById('test'+i).getAttribute('work')==="false") {
+				a.ok(!t, "exec group5, test"+i+" successfully ✔ "+t );
+			} else {
+				a.ok(t, "exec group5, test"+i+" successfully ✔ "+t );
+			}
+		} catch(e) {
+			a.ok(0, "exec group5, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=500; i<503; i++) {
+		try {
+			let t=ASSERT.itemAltTextPresent('#test'+i);
+			if(document.getElementById('test'+i).getAttribute('work')==="false") {
+				a.ok(!t, "exec group6, test"+i+" successfully ✔ "+t );
+			} else {
+				a.ok(t, "exec group6, test"+i+" successfully ✔ "+t );
+			}
+		} catch(e) {
+			a.ok(0, "exec group6, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=600; i<604; i++) {
+		try {
+			let t=ASSERT.itemHasText('#test'+i, /hello/);
+			if(document.getElementById('test'+i).getAttribute('work')==="false") {
+				a.ok(!t, "exec group7, test"+i+" successfully ✔ "+t );
+			} else {
+				a.ok(t, "exec group7, test"+i+" successfully ✔ "+t );
+			}
+		} catch(e) {
+			a.ok(0, "exec group7, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=700; i<706; i++) {
+		try {
+			let t=ASSERT.itemTextDirection('#test'+i);
+			a.ok(t, "exec group8, test"+i+" successfully ✔ "+t );
+		} catch(e) {
+			a.ok(0, "exec group8, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	let t=ASSERT.detectOverlaps('#outer700', '#test700');
+	a.ok(t, "exec group9, test800 successfully ✔ "+t );
+	t=ASSERT.detectOverlaps('#outer700', '#test704');
+	a.ok(t, "exec group9, test801 successfully ✔ "+t );
+	t=ASSERT.detectOverlaps('#group7', '#test603');
+	a.ok(t, "exec group9, test802 successfully ✔ "+t );
+
+	t=ASSERT.allLabelsAreWellFormed();
+	a.ok(t, "exec group10, test900 successfully ✔ "+t );
+
+	t=ASSERT.itemOnScreen('body', false);
+	a.ok(!t, "exec group11, test1000 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('body', true);
+	a.ok(t, "exec group11, test1001 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#qunit-filter-input', false);
+	a.ok(!t, "exec group11, test1002 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#group8', false);
+	a.ok(t, "exec group11, test1003 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#test700', false);
+	a.ok(t, "exec group11, test1004 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#offscreen1', false);
+	a.ok(!t, "exec group11, test1005 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('body', true);
+	a.ok(t, "exec group11, test1006 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#group8', true);
+	a.ok(t, "exec group11, test1007 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#test700', true);
+	a.ok(t, "exec group11, test1008 successfully ✔ "+t );
+	t=ASSERT.itemOnScreen('#offscreen1', true);
+	a.ok(t, "exec group11, test1009 successfully ✔ "+t );
+
+
+}
+
+ready(biblio_test);
+
+
+
+// I think this JS will get moved to another file later. . .
+
+
+// fontSize: as specified attrib; pt, px, em, rem, %, vh, vw, cm, mm, in, pc, ch, ex, vmin|vm, vmax, no text, inherited size
+// fontName; as font-family and font, no text check, inherited
+// colour: 8hex, 6hex, 3hex, namedColour, rgb tuple, rgba tuple, hsl tuple, hsla tuple, transparent
+// BG colour, as previous
+// title: item with title, item small title, item no title
+// alt : item with alt, item small alt, item no alt
+// item text: item with text & match, item with text & no match, item without text
+// text direction: a leftie, a rightie, not text 
+// location: several items from above list. Needs display: inline & block, needs on screen & off screen 
+// on screen: several items from above list. Needs display: inline & block, needs on screen & off screen 
+// overlaps: several items from above list. Needs display: inline & block, needs on screen & off screen 
+// item language: try a language marked up element, plus normal page one 
+	
+
+// add tests on whether getComputedStyle is pulling data at from each possible CSS location
+
+</script>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<br class="blocker" />
+ <footer>
+  <div class="h4_footer"> <div class="leftFooter"><a href="http://jigsaw.w3.org/css-validator/check/referer"><img id="sample2" src="/asset/validCSS.png" alt="Valid CSS!" /></a> 
+<a href="http://validator.w3.org/check?uri=referer"><img src="/asset/valid-xhtml10.png" alt="Valid XHTML 1.0 Transitional" /></a></div>
+<div class="leftFooter"> 
+<a href="http://www.plainenglish.co.uk/services/webcheck.html" title="They, er, don't have a service for >100,000 word sites, so no logo.">Campaign for Plain English</a><br />
+My profile: <a href="http://www.linkedin.com/profile/view?id=110213562" ><i style="font-size:200%; margin-bottom:0px;" class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+</div> Page rendered <time datetime="1542928789">22nd of Nov, 23:19:49</time>, Copyright &copy; 2017 Owen Beresford, <a class="" href="http://owenberesford.me.uk/resource/sums-demo#">contact me</a>.  Last modified <time datetime="1512256366">2nd of Dec, 23:12:46</time>. <br />
+
+Read the generous <a href="http://owenberesford.me.uk/resource/licence#">licence terms</a>, if you feel the need, there is a <a href="http://owenberesford.me.uk/resource/privacy#">privacy here</a>.    View the <a href="http://owenberesford.me.uk/resource/site-chart#">site map</a> or the view source of <a href="http://owenberesford.me.uk/resource/render-source&amp;view=sums-demo">this page</a>.  <a href="#pageMenu">Jump to menu</a>
+</div>
+</footer>
+</body>
+</html>
+
