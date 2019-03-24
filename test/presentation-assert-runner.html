@@ -126,7 +126,7 @@ edited <time datetime="1509913357">5th of Nov, 20:22:37</time>
 <span id="test205" style="color:rgba(255,30,30, 0.3);">test 205</span>
 <span id="test206" style="color:hsl(10, 55%, 20%);">test 206</span>
 <span id="test207" style="color:hsla(120,100%,50%,0.3);">test 207</span>
-<span id="test208" style="color:transparent">test 208</span>
+<span id="test208" style="color:transparent; background-color:#333;">test 208</span>
 <span id="test209">test 209</span>
 </div>
 
@@ -205,10 +205,10 @@ function test_impl(a) {
 		// initial smoke test to confirm no crash
 		// also this is how to DI the tinycolor module, which in a browser adds itself to window
 		ASSERT.fontSize(SELECT) ;
-		ASSERT.fontName(SELECT) ;
+		ASSERT.fontName(SELECT) ; 
 		ASSERT.itemColour(SELECT) ;
 		ASSERT.itemBGColour(SELECT) ;
-		ASSERT.itemColourConstrast(SELECT) ;
+		ASSERT.itemColourContrast(SELECT) ;
 		ASSERT.itemTitlePresent(SELECT);
 		ASSERT.itemAltTextPresent(SELECT+"2");
 		ASSERT.itemHasText(SELECT, /hello/);
@@ -258,6 +258,15 @@ function test_impl(a) {
 			a.ok(t, "exec group4, test"+i+" successfully ✔ "+t );
 		} catch(e) {
 			a.ok(0, "exec group4, test"+i+" FAILED "+e.message );
+		}
+	}
+
+	for(let i=200; i<210; i++) {
+		try {
+			let t=ASSERT.itemColourContrast('#test'+i);
+			a.ok(t, "exec group12 - contrast, test"+i+" successfully ✔ "+t );
+		} catch(e) {
+			a.ok(0, "exec group12 - contrast, test"+i+" FAILED "+e.message );
 		}
 	}
 
@@ -319,12 +328,24 @@ function test_impl(a) {
 	t=ASSERT.allLabelsAreWellFormed();
 	a.ok(t, "exec group10, test900 successfully ✔ "+t );
 
+	t=ASSERT.itemScreenLocation('body');
+	a.ok(t, "exec group13, test1000 successfully ✔ "+t );
+	t=ASSERT.itemScreenLocation('#qunit-filter-input'); // its not in screen
+	a.ok(t, "exec group13, test1002 successfully ✔ "+t );
+	t=ASSERT.itemScreenLocation('#group8');
+	a.ok(t, "exec group13, test1003 successfully ✔ "+t );
+	t=ASSERT.itemScreenLocation('#test700');
+	a.ok(t, "exec group13, test1004 successfully ✔ "+t );
+	t=ASSERT.itemScreenLocation('#offscreen1');
+	a.ok(t, "exec group13, test1005 successfully ✔ "+t );
+
+
 	t=ASSERT.itemOnScreen('body', false);
 	a.ok(!t, "exec group11, test1000 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('body', true);
 	a.ok(t, "exec group11, test1001 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#qunit-filter-input', false);
-	a.ok(!t, "exec group11, test1002 successfully ✔ "+t );
+	a.ok(t, "exec group11, test1002 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#group8', false);
 	a.ok(t, "exec group11, test1003 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#test700', false);
@@ -339,7 +360,6 @@ function test_impl(a) {
 	a.ok(t, "exec group11, test1008 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#offscreen1', true);
 	a.ok(t, "exec group11, test1009 successfully ✔ "+t );
-
 
 }
 
