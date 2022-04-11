@@ -99,7 +99,7 @@ edited <time datetime="1509913357">5th of Nov, 20:22:37</time>
 <span id="test11" style="font-size:10pc;">test 11</span>
 <span id="test12" style="font-size:10ch;">test 12</span>
 <span id="test13" style="font-size:1ex;">test 13</span>
-<span id="test14" style="font-size:10vmin;">test 14</span>
+<span id="test14" style="font-size:10vmin;">test 14 ~ 666888666</span>
 <span id="test15" style="font-size:1em;"></span>
 <span id="test16" >test 16</span>
 <span id="test17" style="font-size:1em; display:none;">test 17</span>
@@ -330,7 +330,7 @@ function test_impl(a) {
 
 	t=ASSERT.itemScreenLocation('body');
 	a.ok(t, "exec group13, test1000 successfully ✔ "+t );
-	t=ASSERT.itemScreenLocation('#qunit-filter-input'); // its not in screen
+	t=ASSERT.itemScreenLocation('#qunit-filter-input'); // its not on screen
 	a.ok(t, "exec group13, test1002 successfully ✔ "+t );
 	t=ASSERT.itemScreenLocation('#group8');
 	a.ok(t, "exec group13, test1003 successfully ✔ "+t );
@@ -345,17 +345,17 @@ function test_impl(a) {
 	t=ASSERT.itemOnScreen('body', true);
 	a.ok(t, "exec group11, test1001 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#qunit-filter-input', false);
-	a.ok(t, "exec group11, test1002 successfully ✔ "+t );
+	a.ok(!t, "exec group11, test1002 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#group8', false);
-	a.ok(t, "exec group11, test1003 successfully ✔ "+t );
+	a.ok(!t, "exec group11, test1003 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#test700', false);
-	a.ok(t, "exec group11, test1004 successfully ✔ "+t );
+	a.ok(!t, "exec group11, test1004 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#offscreen1', false);
 	a.ok(!t, "exec group11, test1005 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('body', true);
 	a.ok(t, "exec group11, test1006 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#group8', true);
-	a.ok(t, "exec group11, test1007 successfully ✔ "+t );
+	a.ok(!t, "exec group11, test1007 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#test700', true);
 	a.ok(t, "exec group11, test1008 successfully ✔ "+t );
 	t=ASSERT.itemOnScreen('#offscreen1', true);
@@ -462,6 +462,21 @@ function test_impl(a) {
 		a.ok(!t, "exec group15, test1406 successfully ✔ " );
 		t=ASSERT.hasInvalidChars(json[7]);
 		a.ok(t, "exec group15, test1407 successfully ✔ " );
+	}
+
+	{
+		t=ASSERT.getEleByText('666888666', false);
+		a.ok(t===document.querySelector('#test14'), "group 16 test1408 getEleByText has got the right element");
+		t=ASSERT.getEleByText('666888666', true);
+		a.ok(t===null, "group 16 test1409 getEleByText has got the right element");
+		t=ASSERT.getEleByText('666', false);
+		a.ok(t!==null, "group 16 test1410 getEleByText has got the right element");
+		t=ASSERT.getEleByText('666', true);
+		a.ok(t===null, "group 16 test1411 getEleByText has got the right element");
+		t=ASSERT.getEleByText('333333', false);
+		a.ok(t!==null, "group 16 test1412 getEleByText has got the right element");
+		t=ASSERT.getEleByText('333333', true);
+		a.ok(t===null, "group 16 test1413 getEleByText has got the right element");
 	}
 }
 
