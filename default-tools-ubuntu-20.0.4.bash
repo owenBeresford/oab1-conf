@@ -7,7 +7,7 @@ apt remove cups cups-browsed cups-core-drivers cups-daemon cups-server-common pr
 add-apt-repository ppa:webupd8team/sublime-text-4
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
-apt install python3 python3-pip inkscape libreoffice vim vim-doc vim-scripts ctags apache2 npm php php-fpm php-curl php-gd php-cli postgresql postgresql-doc postgresql-doc-12 isag aspell ispell aptitude dia curl apt-transport-https sublime-text mc python-tz lynx libaspell-dev evince gimp net-tools sshd ssh ssh-askpass ghostscript git git-man git-daemon-run git-doc git-gui lsscsi
+apt install python3 python3-pip lm-sensors inkscape libreoffice vim vim-doc vim-scripts ctags apache2 npm php php-fpm php-dom php-curl php-gd php-cli postgresql postgresql-doc postgresql-doc-12 isag aspell ispell aptitude dia curl apt-transport-https sublime-text mc python-tz lynx libaspell-dev evince gimp net-tools sshd ssh ssh-askpass ghostscript git git-man git-daemon-run git-doc git-gui lsscsi
 snap install chromium zoom-client signal-desktop opera spotify
 
 a2enmod proxy_fcgi setenvif rewrite
