@@ -1,4 +1,8 @@
 #!/bin/bash
+# A script to reduce power consumption and noise created by laptops.
+# @licence: MIT https://en.wikipedia.org/wiki/MIT_License
+# @author: Owen Beresford
+#
 # testing: I have manual tested this on my desktop.  I do not know a practical means to create a unit test for this script.
 # To improve your confidence, add " -x" to the hashbang, and set DEBUG_CURRENT_STATE and run as a non privileged account.
 # This forces a dryrun that CAN NOT change anything
