@@ -1,21 +1,26 @@
 #!/bin/bash
 # testing: I have manual tested this on my desktop.  I do not know a practical means to create a unit test for this script.
 # To improve your confidence, add " -x" to the hashbang, and set DEBUG_CURRENT_STATE and run as a non privileged account.
-# The paths may become out of date, I have coded defensively.
+# This forces a dryrun that CAN NOT change anything
 #
+# The paths may become out of date, I have coded defensively.
+# TODO: disable NFC devices
+
 if [ -n "$DEBUG_CURRENT_STATE" ]; then
 	echo "** DEBUG FLAG SET **"
 fi
 
 if [ "$1" = '-h' -o "$1" = "--help" ]; then	
 	echo "
-A root requiring script to make ubuntu laptop more quiet and battery effiecient
+A root requiring script to make an ubuntu laptop more quiet and battery efficient.
 Obviously use at own risk
 
 $0 --add-performance  ~ removes hobbles
 $0 --speed
 $0 --add-endurance    ~ add hobbles
 $0 --life
+
+This script doesn't touch the update rate for APT.  Please look at your settings, as apt uses a lot of CPU power.
 "
 	exit 0
 fi
@@ -89,7 +94,7 @@ spin_up()  {
 	if [ -n "`rfkill | grep bluetooth | grep '    blocked'`" ]; then
 		rfkill unblock bluetooth
 	fi
-	echo -e "Script author is not using bluetooth devices or nfc devices;\nYou wil need to edit this step if you are."
+	echo -e "Script author is not using bluetooth devices or nfc devices;\nYou will need to edit this step if you are."
 	return 0
 }
 
