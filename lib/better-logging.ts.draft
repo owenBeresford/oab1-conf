@@ -1,0 +1,76 @@
+/**
+This is bits of code, I need a real implementation work out the logging flags .
+
+*/
+
+
+/* **** server side code ****
+The interface are fields that need to be present in the user account; my sketch process doesn't woork for systems with no login
+This type doesn't require a TS server, its just a reference 
+*/
+interface NeedsLogs {
+// not all the flags are needed everytime
+	logDisable:boolean;
+	logConfiguredLevel:number;
+	logDestination:string;
+	logFeatures:Record<string,boolean>;
+	logHighLatency:number;
+}
+const LOG_AMOUNT_FORCED_LOGGING=0.05;
+
+function __magic_asset_serve() {
+	// look at current user, return asset URL with or without logging, based on logDisable
+	// append a JS block to emit current logging profile; AND force a percentage of users to be high logging to review service availability/ quality
+	// if latency stats are available, use this to reduce logging on persistent high latency users, stored and updated in logHighLatency
+	// suggest EWMA process to build logHighLatency
+	// create logCurrentLevel as current value
+	// append a JS block to setup the remote log ingestion
+}
+
+
+/* *** client side ***
+
+SNIPPET
+*/
+import parse from 'error-stack2';
+import winston from 'winston';  // pls install v3
+// TODO: work out how types work in winston
+
+type LogStrengthType:Record<string,int> = [ /* ... */ ];
+
+function create_transports(u:UserProfile):winston.transports {
+	return new wintson.transports(u.logDestination);
+}
+
+function setup_winston(u:UserProfile):Winston {
+	return winston.createLogger({
+		silent: u.logDisabled,
+		level: u.logCurrentLevel,
+		format: winston.format.json(),
+		defaultMeta: { service: 'user-service' },
+		transports: [
+ // SAMPLE:  new winston.transports.File({ filename: 'error.log', level: 'error' }),
+ 		   create_transports(u),
+  		],
+	});
+}
+
+// this function should be part of a larger service that has class variables, including logging profile 
+function magic_log(txt:string, level:LogStrengthType):void {
+	let who={};	
+
+	try { throw Error(); } 
+	catch(e) { who=parse(e.stack)[1]; }; 
+
+	if(this.user.logFeatures[ who['callee'] ]) {
+		this.logger.log({ level: 'debug', message: txt });
+		return;
+	}
+	
+	if(level < this.user.logCurrentLevel ) {
+		this.logger.log({ level: level, message: txt });
+		return;
+	}
+}
+
+
