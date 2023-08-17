@@ -42,8 +42,8 @@ function create_transports(u:UserProfile):winston.transports {
 	return new wintson.transports(u.logDestination);
 }
 
-function setup_winston(u:UserProfile):Winston {
-	return winston.createLogger({
+function setup_magic_logging(u:UserProfile):Winston {
+	const LOG=winston.createLogger({
 		silent: u.logDisabled,
 		level: u.logCurrentLevel,
 		format: winston.format.json(),
@@ -53,6 +53,29 @@ function setup_winston(u:UserProfile):Winston {
  		   create_transports(u),
   		],
 	});
+
+	window.onerror = function(msg, url, line, col, error) {
+		var extra = !col ? '' : '\ncolumn: ' + col;
+		extra += !error ? '' : '\nerror: ' + error;
+		
+		if(LOG) {
+			LOG.log({ level: 'error', message: msg + "\nurl: " + url + "\nline: " + line +" "+ extra });
+		}
+		console.error( msg );
+		console.log( error+" at "+url+":"+line );
+
+		let suppressErrorAlert = true;
+		return suppressErrorAlert;
+	};
+	window.addEventListener("error", function (e) {
+		if(LOG) {
+			LOG.log({ level: 'error', message: e.error.message + " at "+ e.error.stack );
+		}
+		console.error( e.error.message );
+		console.log(" at "+ e.error.stack);
+	});
+
+	return LOG;
 }
 
 // this function should be part of a larger service that has class variables, including logging profile 
