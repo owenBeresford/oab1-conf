@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "jsx": "react-jsx", // change for Vue
+    "noEmit": false,
+    "sourceMap": true,
+	"skipLibCheck": true,
+    "module": "esnext",
+    "strict": true,
+    "target": "esnext",
+	"allowSyntheticDefaultImports": true,
+   // "jsx": "preserve",
+    "importHelpers": true,
+	"emitDecoratorMetadata": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "noFallthroughCasesInSwitch": true,
+	"isolatedModules": true,
+    "moduleResolution": "node",
+    "strictPropertyInitialization": false,
+    "noStrictGenericChecks":  true,
+    "skipLibCheck": true,
+	"extendedDiagnostics":true,
+    "esModuleInterop": true,
+	"downlevelIteration": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+	"skipLibCheck": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "jest",
+    	"vitest/globals",
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "files" :[], // add here	
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
+}

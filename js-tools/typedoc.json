@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src/index.js",
+    "src/server/services/*",
+    "src/server/types/*",
+    "./src/server/index.ts",
+    "./src/client/services/*",
+    "./src/client/components/*",
+    "./src/client/types/*"
+  ],
+  "out": "public/docs",
+  "exclude": [
+    "src/client/test/",
+    "src/server/tests",
+    "/node_modules/",
+    "src/stories/",
+    "src/build-tools"
+  ],
+  "excludeExternals": true,
+  "htmlLang": "en-GB",
+  "skipErrorChecking": true,
+  "searchInComments": true,
+  "plugin": ["typedoc-plugin-missing-exports"]
+}

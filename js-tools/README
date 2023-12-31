@@ -1,0 +1,6 @@
+Many of the files in here are hidden (i.e. start with a dot).
+
+* To force a better directory listing use `ls -al`
+* Use `npm init` for the package.json
+* TODO: create cypress.json
+
