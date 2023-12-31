@@ -1,4 +1,4 @@
-Many of the files in here are hidden (i.e. start with a dot).
+SHORT SHELF LIFE JS tool configs
 
 * To force a better directory listing use `ls -al`
 * Use `npm init` for the package.json
