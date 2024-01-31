@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
-import path from 'path'; 
-import { getGlobals } from 'common-es';
-const { __dirname, __filename } = getGlobals(import.meta.url);
+import path, { dirname} from "path";
 import ts from 'vite-plugin-ts';
 import vue from '@vitejs/plugin-vue';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 
 let mode='development';
 if(process.env && process.env.NODE_ENV) {
