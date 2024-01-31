@@ -21,7 +21,7 @@
 #
 oct4=1
 network="192.168.1."
-isIP=`echo "$1" | grep '^[0-9]\+\.[0-9]\+\.[0-9]\+$'`
+isIP=`echo "$1" | grep '^[0-9]\+\.[0-9]\+\.[0-9]\+\.$'`
 if [ -n "$isIP" ]; then 
 	network="$1"
 fi
@@ -30,7 +30,7 @@ quiet=0
 if [ "$1" = "-q" -o "$2" = "-q" ]; then
 	quiet=1
 fi 
-if [ ! $quiet -a "$isIP" != "192.168.1." ]; then
+if [ ! $quiet -a "$isIP" != "192.168.1" ]; then
 	echo "I, the admin, promise to only run this on a LAN\n Otherwise I understand my ISP may alter my connection."
 fi
 
