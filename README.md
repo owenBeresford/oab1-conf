@@ -2,7 +2,7 @@ oab1-conf
 =========
 
 Assorted *nix tool configs, for me.  
-UPDATE: [also needs to be edited] #leSigh, not "nixOS", but the generic toolbox that follows POSIX around.  I am fairly conservative for OS, as I never want it to the the biggest thing in my day.  Any of them.  
+UPDATE: [also needs to be edited] #leSigh, not "nixOS", but the generic toolbox that follows POSIX around.  I am fairly conservative for OS, as I never want it to the the biggest thing in my day.  Any of them.  I prefer a linux to save time.
 
 This is a project I need, not a project that I have.  "Nevermore" the raven croaks.
 **I am adding content to this, as I make any changes.**
