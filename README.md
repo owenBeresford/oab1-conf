@@ -9,7 +9,7 @@ This is a project I need, not a project that I have.  "Nevermore" the raven croa
 
 NOTE: using neovim fork supplies more features by default,
 Using neovim requires copying ~/.vimrc to ~/.config/nvim/init.vim for best effect.
-People say my mere effort saving is misplaced, as they assign political beliefs to the nvim project owner.   They might be right, there are many extreme rightwing US people who love guns.  However <h2>I am not "compiling everything from scratch".<h2>   I also try not to invent languages or platforms.
+People say my mere effort saving is misplaced, as they assign political beliefs to the nvim project owner.   They might be right, there are many extreme rightwing US people who love guns.  However <h2>I am not "compiling everything from scratch".</h2>   I also try not to invent languages or platforms.
 
 Requirements :
 * bashrc and related
